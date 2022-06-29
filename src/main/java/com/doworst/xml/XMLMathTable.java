@@ -1,4 +1,4 @@
-package com.doworst.XML;
+package com.doworst.xml;
 
 import com.doworst.dao.model.MathTableRowModel;
 

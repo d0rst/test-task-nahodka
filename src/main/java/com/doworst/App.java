@@ -1,12 +1,10 @@
 package com.doworst;
 
-import com.doworst.dao.MathTableRowDAO;
 import com.doworst.dao.MyDAOFactory;
-import com.doworst.XML.UtilXML;
+import com.doworst.xml.UtilXML;
 import com.doworst.dao.model.MathTableRowModel;
 import picocli.CommandLine;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
