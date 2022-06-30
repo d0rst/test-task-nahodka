@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 
+/**
+ * Application launch class
+ */
 public class App implements Callable<Integer> {
-
     public static final Properties prop = new Properties();
 
     @CommandLine.Option(names = "-a", required = false)

@@ -6,16 +6,21 @@ import javax.sql.RowSet;
 import java.util.Collection;
 
 public interface MathTableRowDAO {
-
+    /** adding a row to a table */
     void insertTableRow(MathTableRowModel tableRowModel);
 
+    /** deleting a row in a table */
     boolean deleteTableRow();
 
+    /** search for a row in a table */
     MathTableRowModel findTableRow();
 
+    /** updating a row in a table */
     boolean updateTableRow();
 
+    /** select rows as RowSet */
     RowSet selectTableRowRS();
 
+    /** select all rows as a Сollection */
     Collection selectTableRows();
 }

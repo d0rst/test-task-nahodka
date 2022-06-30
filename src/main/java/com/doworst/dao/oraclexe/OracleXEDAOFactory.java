@@ -7,24 +7,32 @@ import oracle.jdbc.datasource.impl.OracleDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
+/**
+ * Factory class for working with Oracle XE connection
+ */
 public class OracleXEDAOFactory extends MyDAOFactory {
-
+    /** link to the path to the database from the config */
     public static final String DB_URL = App.prop.getProperty("db.url");
 
+    private static Connection connection;
+
+    /** Method for creating a database connection */
     public static Connection createConnection() {
         OracleDataSource ods;
-        Connection conn = null;
         try {
             ods = new OracleDataSource();
             ods.setURL(DB_URL);
             ods.setUser(App.prop.getProperty("db.user"));
             ods.setPassword(App.prop.getProperty("db.pass"));
-            conn = ods.getConnection();
+            connection = ods.getConnection();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return conn;
+        return connection;
+    }
+
+    public Connection getConnectionSource() {
+        return connection;
     }
 
     public MathTableRowDAO getMathTableDAO() {

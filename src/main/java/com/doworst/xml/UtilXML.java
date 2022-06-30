@@ -8,16 +8,23 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.List;
-
-
+/**
+ * Utility for processing XML format files
+ */
 public class UtilXML {
-
+    /** method to create xml table from class MathTableRowModel
+     * @param list - MathTableRowModel list
+     * */
     public static XMLMathTable buildTableXML(List<MathTableRowModel> list){
         XMLMathTable table = new XMLMathTable();
         table.setMathTableRowModels(list);
         return table;
     }
 
+    /** method to create xml file from class MathTableRowModel
+     * @param list - MathTableRowModel list
+     * @param outNameFile - path to output xml file
+     * */
     public static void createTableXML(List<MathTableRowModel> list, String outNameFile) throws JAXBException {
         XMLMathTable table = buildTableXML(list);
         File file = new File(outNameFile);
@@ -28,6 +35,9 @@ public class UtilXML {
 
     }
 
+    /** method to create xml file from class MathTableRowModel
+     * @param fileName - path to input xml file
+     * */
     public static List<MathTableRowModel> xmlFileToObjects(String fileName) {
         try {
             File xmlFile = new File(fileName);

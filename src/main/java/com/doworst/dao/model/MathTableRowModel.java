@@ -2,21 +2,35 @@ package com.doworst.dao.model;
 
 import java.util.HashMap;
 import java.util.Map;
-
-
+/**
+ *
+ * Class model of a row in a multiplication table.
+ *
+ */
 public class MathTableRowModel {
+    /** column name in the table e.g. a1, a2 .. b1, b2 */
     private String name;
-    private Integer value;
-    private Map<String, Integer> mulList;
 
+    /** value in the table */
+    private Integer value;
+
+    /** map contains the value of the multiplication table */
+    private Map<String, Integer> mulMap;
+
+    /** default constructor */
     public MathTableRowModel() {}
+    /**
+     * Constructor - create and fill in the multiplication table
+     * @param name - column name e.g. a1, a2
+     * @param value - value in the table a1 = 4, a2 = 8
+     */
 
     public MathTableRowModel(String name, Integer value) {
         this.name = name;
         this.value = value;
-        this.mulList = new HashMap<String, Integer>();
+        this.mulMap = new HashMap<String, Integer>();
         for (int i = 1; i < 10; i++) {
-            mulList.put(name + i, value * i);
+            mulMap.put(name + i, value * i);
         }
     }
 
@@ -36,12 +50,12 @@ public class MathTableRowModel {
         this.value = value;
     }
 
-    public Map<String, Integer> getMulList() {
-        return mulList;
+    public Map<String, Integer> getMulMap() {
+        return mulMap;
     }
 
-    public void setMulList(Map<String, Integer> mulList) {
-        this.mulList = mulList;
+    public void setMulMap(Map<String, Integer> mulMap) {
+        this.mulMap = mulMap;
     }
 
     @Override
@@ -49,7 +63,7 @@ public class MathTableRowModel {
         return "MathTableRowModel{" +
                 "name='" + name + '\'' +
                 ", value=" + value +
-                ", mulList=" + mulList +
+                ", mulMap=" + mulMap +
                 '}';
     }
 }

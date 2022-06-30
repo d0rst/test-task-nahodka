@@ -11,6 +11,7 @@ import java.util.Collection;
 public class OracleXEMathTableRowDAO implements MathTableRowDAO {
 
     private Connection connection;
+
     private Statement stmt;
 
     public OracleXEMathTableRowDAO() {
