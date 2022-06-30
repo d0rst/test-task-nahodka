@@ -9,7 +9,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLiteMyDAOFactory extends MyDAOFactory {
-    private static final String DB_URL= App.prop.getProperty("db.url");
+
+    private static final String DB_URL = App.prop.getProperty("db.url");
 
     private static Connection connection;
 

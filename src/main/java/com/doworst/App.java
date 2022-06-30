@@ -47,15 +47,15 @@ public class App implements Callable<Integer> {
         }
         List<MathTableRowModel> mathTableRowModels = new ArrayList<MathTableRowModel>();
 
-        MyDAOFactory daoFactory = MyDAOFactory.getDAOFactory(prop.getProperty("dao.param"));
         if (a != 0 && b != 0 && c != 0) {
             mathTableRowModels.add(new MathTableRowModel("a", a));
             mathTableRowModels.add(new MathTableRowModel("b", b));
             mathTableRowModels.add(new MathTableRowModel("c", c));
-            UtilXML.createTableXML(mathTableRowModels, prop.getProperty("xml.outpath"));
+            UtilXML.createTableXML(mathTableRowModels, prop.getProperty("xml.out_xml_path"));
         }
 
         if (xmlin != null) {
+            MyDAOFactory daoFactory = MyDAOFactory.getDAOFactory(prop.getProperty("dao.param"));
             List<MathTableRowModel> table = UtilXML.xmlFileToObjects(xmlin);
             for (MathTableRowModel m : table) {
                 daoFactory.getMathTableDAO().insertTableRow(m);

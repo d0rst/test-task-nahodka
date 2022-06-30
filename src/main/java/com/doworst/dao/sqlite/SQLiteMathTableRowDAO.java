@@ -24,7 +24,6 @@ public class SQLiteMathTableRowDAO implements MathTableRowDAO {
 
     @Override
     public void insertTableRow(MathTableRowModel mathTableRowModel) {
-
         try {
             connection.setAutoCommit(false);
             String sql = "INSERT INTO multiplication (NAME, VALUE) " +
@@ -73,8 +72,7 @@ public class SQLiteMathTableRowDAO implements MathTableRowDAO {
         try {
             connection.setAutoCommit(false);
             ResultSet rs = stmt.executeQuery(sql);
-
-            while ( rs.next() ) {
+            while (rs.next()) {
                 String  name = rs.getString("name");
                 int value  = rs.getInt("value");
                 MathTableRowModel m = new MathTableRowModel(name, value);
@@ -83,11 +81,10 @@ public class SQLiteMathTableRowDAO implements MathTableRowDAO {
             rs.close();
             stmt.close();
             connection.close();
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-
         return mathTableRows;
     }
 }

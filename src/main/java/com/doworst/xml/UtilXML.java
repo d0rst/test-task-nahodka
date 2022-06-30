@@ -28,7 +28,6 @@ public class UtilXML {
 
     }
 
-
     public static List<MathTableRowModel> xmlFileToObjects(String fileName) {
         try {
             File xmlFile = new File(fileName);
@@ -43,5 +42,4 @@ public class UtilXML {
         }
         return null;
     }
-
 }
