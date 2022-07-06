@@ -31,7 +31,7 @@ public class SQLiteMyDAOFactory extends MyDAOFactory {
         return connection;
     }
 
-    public MathTableRowDAO getMathTableDAO() {
+    public MathTableRowDAO getMathTableDAO() throws SQLException {
         return new SQLiteMathTableRowDAO();
     }
 }

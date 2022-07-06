@@ -1,13 +1,15 @@
 package com.doworst;
 
 import com.doworst.dao.MyDAOFactory;
+import com.doworst.exeption.ConfigException;
 import com.doworst.xml.UtilXML;
 import com.doworst.dao.model.MathTableRowModel;
 import picocli.CommandLine;
 
+import javax.xml.bind.JAXBException;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -36,34 +38,55 @@ public class App implements Callable<Integer> {
     String conf = "config.properties";
 
     @CommandLine.Option(names = "-f", description="Path and name of xml file")
-    String xmlin;
+    String xmlIn;
 
-    public Integer call() throws Exception {
+    public Integer call() {
         try {
             FileInputStream fis = new FileInputStream(conf);
             prop.load(fis);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            propChek("dao.param");
+            propChek("db.url");
+        } catch (IOException | ConfigException e) {
+            System.out.println(e);
+            return 0;
         }
+
         List<MathTableRowModel> mathTableRowModels = new ArrayList<MathTableRowModel>();
 
         if (a != 0 && b != 0 && c != 0) {
             mathTableRowModels.add(new MathTableRowModel("a", a));
             mathTableRowModels.add(new MathTableRowModel("b", b));
             mathTableRowModels.add(new MathTableRowModel("c", c));
-            UtilXML.createTableXML(mathTableRowModels, prop.getProperty("xml.out_xml_path"));
+            try {
+                propChek("xml.out_xml_path");}
+            catch (NullPointerException | ConfigException e) {
+                System.out.println(e);
+                return 0;
+            }
+            try {
+                UtilXML.createTableXML(mathTableRowModels, prop.getProperty("xml.out_xml_path"));
+            } catch (JAXBException e) {
+                System.out.println(e);
+            }
         }
 
-        if (xmlin != null) {
+        if (xmlIn != null) {
             MyDAOFactory daoFactory = MyDAOFactory.getDAOFactory(prop.getProperty("dao.param"));
-            List<MathTableRowModel> table = UtilXML.xmlFileToObjects(xmlin);
-            for (MathTableRowModel m : table) {
-                daoFactory.getMathTableDAO().insertTableRow(m);
+            try {
+                for (MathTableRowModel m : UtilXML.convertXMLFileToObjects(xmlIn)) {
+                    daoFactory.getMathTableDAO().insertTableRow(m);
+                }
+            } catch (SQLException | JAXBException e) {
+                System.out.println(e);
             }
         }
         return 0;
+    }
+
+    private void propChek(String parm) throws ConfigException {
+        if (prop.contains(parm)) {
+            throw new ConfigException("Отсутствует или не корректен " + parm);
+        }
     }
 }
 

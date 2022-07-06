@@ -10,39 +10,27 @@ import java.util.Collection;
 
 public class SQLiteMathTableRowDAO implements MathTableRowDAO {
 
-    private Connection connection;
-    private Statement stmt;
+    private final Connection connection;
 
-    public SQLiteMathTableRowDAO() {
-        try {
-            this.connection = SQLiteMyDAOFactory.createConnection();
-            this.stmt = connection.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public SQLiteMathTableRowDAO() throws SQLException {
+        this.connection = SQLiteMyDAOFactory.createConnection();
     }
 
     @Override
-    public void insertTableRow(MathTableRowModel mathTableRowModel) {
-        try {
-            connection.setAutoCommit(false);
-            String sql = "INSERT INTO multiplication (NAME, VALUE) " +
-                    "VALUES(?, ?)";
+    public void insertTableRow(MathTableRowModel mathTableRowModel) throws SQLException {
+        connection.setAutoCommit(false);
+        String sql = "INSERT INTO multiplication (NAME, VALUE) " +
+                "VALUES(?, ?)";
 
-            PreparedStatement statement =
-                    connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            statement.setString(1, mathTableRowModel.getName());
-            statement.setInt(2, mathTableRowModel.getValue());
-            statement.executeUpdate();
+        preparedStatement.setString(1, mathTableRowModel.getName());
+        preparedStatement.setInt(2, mathTableRowModel.getValue());
+        preparedStatement.executeUpdate();
 
-            statement.close();
-            connection.commit();
-            connection.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
+        preparedStatement.close();
+        connection.commit();
+        connection.close();
     }
 
     @Override
@@ -70,8 +58,8 @@ public class SQLiteMathTableRowDAO implements MathTableRowDAO {
         Collection<MathTableRowModel> mathTableRows = new ArrayList<MathTableRowModel>();
         String sql = "select * from multiplication";
         try {
-            connection.setAutoCommit(false);
-            ResultSet rs = stmt.executeQuery(sql);
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 String  name = rs.getString("name");
                 int value  = rs.getInt("value");
@@ -79,7 +67,7 @@ public class SQLiteMathTableRowDAO implements MathTableRowDAO {
                 mathTableRows.add(m);
             }
             rs.close();
-            stmt.close();
+            statement.close();
             connection.close();
         } catch (Exception e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );

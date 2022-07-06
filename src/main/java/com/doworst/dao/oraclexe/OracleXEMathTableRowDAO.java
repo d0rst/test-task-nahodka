@@ -10,40 +10,27 @@ import java.util.Collection;
 
 public class OracleXEMathTableRowDAO implements MathTableRowDAO {
 
-    private Connection connection;
+    private final Connection connection;
 
-    private Statement stmt;
-
-    public OracleXEMathTableRowDAO() {
-        try {
-            this.connection = OracleXEDAOFactory.createConnection();
-            this.stmt = connection.createStatement();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    public OracleXEMathTableRowDAO() throws SQLException {
+        this.connection = OracleXEDAOFactory.createConnection();
     }
 
     @Override
-    public void insertTableRow(MathTableRowModel mathTableRowModel) {
-        try {
-            connection.setAutoCommit(false);
-            String sql = "INSERT INTO math (NAME, VALUE) " +
-                    "VALUES(?, ?)";
+    public void insertTableRow(MathTableRowModel mathTableRowModel) throws SQLException {
+        String sql = "INSERT INTO math (NAME, VALUE) " +
+                "VALUES(?, ?)";
 
-            PreparedStatement statement =
-                    connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement statement =
+                connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            statement.setString(1, mathTableRowModel.getName());
-            statement.setInt(2, mathTableRowModel.getValue());
-            statement.executeUpdate();
+        statement.setString(1, mathTableRowModel.getName());
+        statement.setInt(2, mathTableRowModel.getValue());
+        statement.executeUpdate();
 
-            statement.close();
-            connection.commit();
-            connection.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
+        statement.close();
+        connection.commit();
+        connection.close();
     }
 
     @Override
@@ -67,25 +54,20 @@ public class OracleXEMathTableRowDAO implements MathTableRowDAO {
     }
 
     @Override
-    public Collection<MathTableRowModel> selectTableRows() {
-        Collection<MathTableRowModel> mathTableRows = new ArrayList<MathTableRowModel>();
+    public Collection<MathTableRowModel> selectTableRows() throws SQLException {
+        Collection<MathTableRowModel> mathTableRows = new ArrayList<>();
         String sql = "select * from math";
-        try {
-            connection.setAutoCommit(false);
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                String  name = rs.getString("name");
-                int value  = rs.getInt("value");
-                MathTableRowModel m = new MathTableRowModel(name, value);
-                mathTableRows.add(m);
-            }
-            rs.close();
-            stmt.close();
-            connection.close();
-        } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        while (rs.next()) {
+            String  name = rs.getString("name");
+            int value  = rs.getInt("value");
+            MathTableRowModel m = new MathTableRowModel(name, value);
+            mathTableRows.add(m);
         }
+        rs.close();
+        stmt.close();
+        connection.close();
         return mathTableRows;
     }
 }

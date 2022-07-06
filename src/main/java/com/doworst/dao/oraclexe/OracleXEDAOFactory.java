@@ -11,23 +11,16 @@ import java.sql.SQLException;
  * Factory class for working with Oracle XE connection
  */
 public class OracleXEDAOFactory extends MyDAOFactory {
-    /** link to the path to the database from the config */
-    public static final String DB_URL = App.prop.getProperty("db.url");
-
     private static Connection connection;
 
     /** Method for creating a database connection */
-    public static Connection createConnection() {
+    public static Connection createConnection() throws SQLException {
         OracleDataSource ods;
-        try {
-            ods = new OracleDataSource();
-            ods.setURL(DB_URL);
-            ods.setUser(App.prop.getProperty("db.user"));
-            ods.setPassword(App.prop.getProperty("db.pass"));
-            connection = ods.getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        ods = new OracleDataSource();
+        ods.setURL(App.prop.getProperty("db.url"));
+        ods.setUser(App.prop.getProperty("db.user"));
+        ods.setPassword(App.prop.getProperty("db.pass"));
+        connection = ods.getConnection();
         return connection;
     }
 
@@ -35,7 +28,7 @@ public class OracleXEDAOFactory extends MyDAOFactory {
         return connection;
     }
 
-    public MathTableRowDAO getMathTableDAO() {
+    public MathTableRowDAO getMathTableDAO() throws SQLException {
         return new OracleXEMathTableRowDAO();
     }
 }

@@ -25,7 +25,8 @@ public class UtilXML {
      * @param list - MathTableRowModel list
      * @param outNameFile - path to output xml file
      * */
-    public static void createTableXML(List<MathTableRowModel> list, String outNameFile) throws JAXBException {
+    public static void createTableXML(List<MathTableRowModel> list, String outNameFile)
+            throws JAXBException, NullPointerException {
         XMLMathTable table = buildTableXML(list);
         File file = new File(outNameFile);
         JAXBContext jaxbContext = JAXBContext.newInstance(XMLMathTable.class);
@@ -38,18 +39,12 @@ public class UtilXML {
     /** method to create xml file from class MathTableRowModel
      * @param fileName - path to input xml file
      * */
-    public static List<MathTableRowModel> xmlFileToObjects(String fileName) {
-        try {
-            File xmlFile = new File(fileName);
-            JAXBContext jaxbContext;
-            jaxbContext = JAXBContext.newInstance(XMLMathTable.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            XMLMathTable table = (XMLMathTable) jaxbUnmarshaller.unmarshal(xmlFile);
-            return table.getMathTableRowModels();
-        }
-        catch (JAXBException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public static List<MathTableRowModel> convertXMLFileToObjects(String fileName) throws JAXBException {
+        File xmlFile = new File(fileName);
+        JAXBContext jaxbContext;
+        jaxbContext = JAXBContext.newInstance(XMLMathTable.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        XMLMathTable table = (XMLMathTable) jaxbUnmarshaller.unmarshal(xmlFile);
+        return table.getMathTableRowModels();
     }
 }

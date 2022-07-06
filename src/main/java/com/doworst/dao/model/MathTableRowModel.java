@@ -2,6 +2,8 @@ package com.doworst.dao.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 /**
  *
  * Class model of a row in a multiplication table.
@@ -65,5 +67,20 @@ public class MathTableRowModel {
                 ", value=" + value +
                 ", mulMap=" + mulMap +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MathTableRowModel that = (MathTableRowModel) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(value, that.value) &&
+                Objects.equals(mulMap, that.mulMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, value, mulMap);
     }
 }
