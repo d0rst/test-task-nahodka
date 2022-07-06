@@ -1,7 +1,7 @@
 package com.doworst;
 
 import com.doworst.dao.MyDAOFactory;
-import com.doworst.exeption.ConfigException;
+import com.doworst.exception.ConfigException;
 import com.doworst.xml.UtilXML;
 import com.doworst.dao.model.MathTableRowModel;
 import picocli.CommandLine;
